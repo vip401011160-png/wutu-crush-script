@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <base href="/wutu-crush-script/" />
+<link rel="preload" as="image" href="covers/result-SCRIPT.jpg" />
+<link rel="preload" as="image" href="covers/result-GUARD.jpg" />
+<link rel="preload" as="image" href="covers/result-BUBBLE.jpg" />
+<link rel="preload" as="image" href="covers/result-DISASTER.jpg" />
+<link rel="preload" as="image" href="covers/result-ARCHIVE.jpg" />
+<link rel="preload" as="image" href="covers/result-MIXUP.jpg" />
+<link rel="preload" as="image" href="covers/result-EDITOR.jpg" />
+<link rel="preload" as="image" href="covers/cover.jpg" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="dark" />
 <title>测测你的暗恋剧本类型</title>
@@ -172,7 +180,7 @@ const PERSONAS = {
   SCRIPT: {
     name: "脑补编剧", short: "脑补编剧",
     tag: "还没开口之前，整部电影都由我执导",
-    img: "covers/结果卡-SCRIPT.jpg",
+    img: "covers/result-SCRIPT.jpg",
     story: "对方一句「哈哈」，你已经写到下一集高潮。偶遇要排时间线，聊天要留钩子，告白要等剧本写到最完美的那一幕。别人说你想太多，其实你是暗恋界的总编剧——现实还没开拍，你这边已经过完三季。测到脑补编剧，不是叫你永远不落地，是承认：掌控剧本的感觉，有时比被回应还上瘾。",
     points: ["剧本可以写，关键一句还是要留给现实一次试演","别把对方的礼貌台词，硬改成爱情线 BGM","写到第三版还没开口，先问问自己是喜欢人还是喜欢戏"],
     quote: "「还没开口之前，整部电影都由我执导。」"
@@ -180,7 +188,7 @@ const PERSONAS = {
   GUARD: {
     name: "克制暗卫", short: "克制暗卫",
     tag: "我可以喜欢你，但不一定非要被你知道",
-    img: "covers/结果卡-GUARD.jpg",
+    img: "covers/result-GUARD.jpg",
     story: "你习惯远远看一眼就走，在对方需要时出现，不需要时隐形。怕开口破坏刚好的距离，怕「勇敢」变成打扰。朋友笑你憋着，其实你把喜欢活成了护卫姿态：体面、安静、把自己按得很低。测到克制暗卫，是承认你用克制保护双方——只是偶尔也允许自己被看见一点点。",
     points: ["护卫很好，别护到自己只剩透明人","关心可以留痕：一句「记得吃饭」也算出现","克制≠消失；报备式沉默比彻底隐身更温柔"],
     quote: "「我可以喜欢你，但不一定非要被你知道。」"
@@ -188,7 +196,7 @@ const PERSONAS = {
   BUBBLE: {
     name: "试探气泡", short: "试探气泡",
     tag: "我有在靠近啊，只是用气泡不是用炸弹",
-    img: "covers/结果卡-BUBBLE.jpg",
+    img: "covers/result-BUBBLE.jpg",
     story: "点个赞、丢个表情包、发一条刚好会被看到的动态——你把试探做成彩色气泡：轻、亮、一戳就破也好看。不愿正面追问，却一直在试水温。测到试探气泡，说明你享受若即若离的推进感。娱乐向提醒：气泡可爱，连续吹十个还不说人话，对方可能只当你在刷存在感。",
     points: ["气泡三次未果，第四次改半句明白话","试探可以甜，别试探成谜语人","气泡破了不可怕，可怕的是只吹泡从不靠近"],
     quote: "「我有在靠近啊，只是用气泡不是用炸弹。」"
@@ -196,7 +204,7 @@ const PERSONAS = {
   DISASTER: {
     name: "浪漫灾难", short: "浪漫灾难",
     tag: "一句关心，足够我把今晚写成命运转折夜",
-    img: "covers/结果卡-DISASTER.jpg",
+    img: "covers/result-DISASTER.jpg",
     story: "雨中相遇、并肩撑伞、纪念日命名权——你脑内从不演小品，只拍灾难级浪漫巨制。心跳一加速，日记标题已经改好。朋友说你戏多，其实你是把暗恋的情绪音量开到最大：又痛又爽。测到浪漫灾难，是承认你享受大起大落；记得偶尔把音量拧回现实。",
     points: ["高潮可以脑补，落点请核对事实一次","把「命运」改成「今天心情很好」会更轻盈","灾难片很好看，别让自己成为唯一伤亡"],
     quote: "「一句关心，足够我把今晚写成命运转折夜。」"
@@ -204,7 +212,7 @@ const PERSONAS = {
   ARCHIVE: {
     name: "静默收藏家", short: "静默收藏家",
     tag: "我不说，但我什么都收着",
-    img: "covers/结果卡-ARCHIVE.jpg",
+    img: "covers/result-ARCHIVE.jpg",
     story: "截图、收藏、时间戳、原话存档——你把暗恋活成一座上锁的私人博物馆。不点赞是怕暴露关注密度，不清理是舍不得任何一条证据。别人以为你淡，其实你的硬盘比嘴巴诚实。测到静默收藏家，是承认你用收藏获得安全感。",
     points: ["收藏夹定期回顾：哪些是喜欢，哪些只是习惯","存一句原话很好，偶尔也回一句新的","博物馆可以私密，别把自己锁在库房里"],
     quote: "「我不说，但我什么都收着。」"
@@ -212,7 +220,7 @@ const PERSONAS = {
   MIXUP: {
     name: "高能误会王", short: "高能误会王",
     tag: "我不是傻——我只是很会把信号演成连续剧",
-    img: "covers/结果卡-MIXUP.jpg",
+    img: "covers/result-MIXUP.jpg",
     story: "哈哈=敷衍？滤镜=暗号？走得近=三角恋预告？你能把同一条信号剪成「铁定有戏」和「铁定没戏」两个结局，并且两边都信。测到高能误会王，是承认你脑内戏核太强；娱乐向提醒：别把礼貌当剧情杀。",
     points: ["每个信号先标「事实」再标「脑补」","两边横跳超过三天，找闺蜜做外部审片","误会很爽，确认一次更省电"],
     quote: "「我不是傻——我只是很会把信号演成连续剧。」"
@@ -220,7 +228,7 @@ const PERSONAS = {
   EDITOR: {
     name: "深夜剪辑师", short: "深夜剪辑师",
     tag: "白天演平静，晚上负责重剪结局",
-    img: "covers/结果卡-EDITOR.jpg",
+    img: "covers/result-EDITOR.jpg",
     story: "凌晨三点，同一段对话被你剪出十种版本。白天你看起来一切正常，晚上你是暗恋片场的首席剪辑。测到深夜剪辑师，是承认你用重剪消化情绪。娱乐向提醒：素材不够时允许停机，睡眠也是爱情的场务。",
     points: ["设个「停机时间」：过了点就不再重剪","把最好的一版留给明天的自己","剪辑很治愈，但生活需要成片"],
     quote: "「白天演平静，晚上负责重剪结局。」"
@@ -393,10 +401,13 @@ function finish() {
   document.getElementById("phName").textContent = persona.name;
   const img = document.getElementById("resultImg");
   const ph = document.getElementById("resultPlaceholder");
-  img.onload = () => { img.style.display = "block"; ph.style.display = "none"; };
-  img.onerror = () => { img.style.display = "none"; ph.style.display = "block"; };
+  const showImg = () => { img.style.display = "block"; ph.style.display = "none"; };
+  const showPh = () => { img.style.display = "none"; ph.style.display = "block"; };
+  img.onload = showImg;
+  img.onerror = showPh;
   img.style.display = "none"; ph.style.display = "block";
-  img.src = persona.img + "?t=" + Date.now();
+  img.src = persona.img; // no cache-buster; use compressed files
+  if (img.complete && img.naturalWidth) showImg();
   document.getElementById("scoreNum").textContent = String(score);
   document.getElementById("resultStory").textContent = persona.story;
   document.getElementById("resultQuote").textContent = persona.quote;
@@ -419,6 +430,11 @@ document.getElementById("shareHintBtn").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText(t); alert("已复制晒文案～"); }
   catch (e) { prompt("复制下面文案：", t); }
 });
+
+function warmResultImages() {
+  Object.values(PERSONAS).forEach(p => { const i = new Image(); i.src = p.img; });
+}
+warmResultImages();
 </script>
 </body>
 </html>
