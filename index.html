@@ -106,6 +106,29 @@
   }
   .site-footer { position: fixed; }
 
+
+  .result-loader {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 56px 20px;
+    color: var(--gold2);
+    font-size: 13px;
+    letter-spacing: .06em;
+  }
+  .result-loader.show { display: flex; }
+  .result-loader .spin {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 3px solid rgba(212,175,55,.2);
+    border-top-color: var(--gold2);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #resultImg { min-height: 0; background: #141018; }
+
 </style>
 </head>
 <body>
@@ -141,6 +164,7 @@
       <h1 id="resultName">—</h1>
       <p class="tagline" id="resultTag"></p>
       <div class="result-hero" id="resultHero">
+        <div class="result-loader show" id="resultLoader"><div class="spin"></div><span>结果卡生成中…</span></div>
         <img id="resultImg" src="" alt="" />
         <div class="placeholder" id="resultPlaceholder">
           <div class="p-name" id="phName">—</div>
@@ -401,12 +425,14 @@ function finish() {
   document.getElementById("phName").textContent = persona.name;
   const img = document.getElementById("resultImg");
   const ph = document.getElementById("resultPlaceholder");
-  const showImg = () => { img.style.display = "block"; ph.style.display = "none"; };
-  const showPh = () => { img.style.display = "none"; ph.style.display = "block"; };
+  const loader = document.getElementById("resultLoader");
+  const showLoader = () => { if (loader) loader.classList.add("show"); img.style.display = "none"; ph.style.display = "none"; };
+  const showImg = () => { if (loader) loader.classList.remove("show"); img.style.display = "block"; ph.style.display = "none"; };
+  const showPh = () => { if (loader) loader.classList.remove("show"); img.style.display = "none"; ph.style.display = "block"; };
   img.onload = showImg;
   img.onerror = showPh;
-  img.style.display = "none"; ph.style.display = "block";
-  img.src = persona.img; // no cache-buster; use compressed files
+  showLoader();
+  img.src = persona.img;
   if (img.complete && img.naturalWidth) showImg();
   document.getElementById("scoreNum").textContent = String(score);
   document.getElementById("resultStory").textContent = persona.story;
