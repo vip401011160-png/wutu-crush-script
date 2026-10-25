@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<title>测测你的暗恋剧本类型</title>
+<style>
+  :root {
+    --bg: #0c0b10;
+    --card: rgba(28, 26, 34, 0.92);
+    --mist: #8a7a6a;
+    --mist2: #c4b5a0;
+    --gold: #d4af37;
+    --gold2: #f0d78c;
+    --cream: #f4f0ea;
+    --muted: #b0a8a0;
+    --line: rgba(212, 175, 55, 0.28);
+    --radius: 18px;
+    --shadow: 0 18px 50px rgba(0,0,0,.45);
+    --max: 680px;
+    --font: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: var(--font);
+    color: var(--cream);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(180,140,80,.25), transparent 60%),
+      radial-gradient(800px 500px at 100% 20%, rgba(212,175,55,.1), transparent 50%),
+      linear-gradient(180deg, #08070a 0%, var(--bg) 40%, #050508 100%);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 20px 16px 96px; min-height: 100vh; }
+  .screen { display: none; animation: fadeIn .35s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .hero-img { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); display: block; object-fit: contain; background: #141018; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(212,175,55,.08); color: var(--gold2); font-size: 12px; letter-spacing: .06em; }
+  h1 { font-size: clamp(1.45rem, 4.5vw, 1.85rem); line-height: 1.25; margin: 14px 0 8px; font-weight: 700; background: linear-gradient(120deg, var(--gold2), #fff, var(--mist2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--muted); font-size: 14px; line-height: 1.65; margin: 0 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 18px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
+  label.field { display: block; font-size: 13px; color: var(--gold2); margin-bottom: 8px; letter-spacing: .04em; }
+  input[type="text"], input[type="password"] { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(212,175,55,.35); background: rgba(0,0,0,.35); color: var(--cream); font-size: 22px; letter-spacing: .35em; text-align: center; outline: none; }
+  .btn { display: block; width: 100%; margin-top: 14px; padding: 14px 18px; border-radius: 14px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #c9a227, #f0d78c); color: #1a1208; }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--gold2); margin-top: 10px; }
+  .err { display: none; color: #f1948a; font-size: 13px; margin-top: 10px; }
+  .err.show { display: block; }
+  .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .progress-wrap { flex: 1; height: 6px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+  .progress-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width .25s ease; }
+  .qnum { font-size: 12px; color: var(--gold2); white-space: nowrap; }
+  .q-title { font-size: 1.1rem; line-height: 1.5; margin: 0 0 16px; }
+  .opts { display: flex; flex-direction: column; gap: 10px; }
+  .opt { text-align: left; padding: 14px 14px; border-radius: 14px; border: 1px solid rgba(212,175,55,.22); background: rgba(0,0,0,.28); color: var(--cream); font-size: 14px; line-height: 1.5; cursor: pointer; font-family: inherit; }
+  .opt:active { border-color: var(--gold); }
+  .opt .letter { display: inline-flex; width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 50%; background: rgba(212,175,55,.15); color: var(--gold2); font-size: 12px; margin-right: 8px; }
+  .tagline { color: var(--muted); margin: 0 0 14px; }
+  .result-hero { position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); margin-bottom: 14px; background: #141018; }
+  .result-hero img { width: 100%; display: block; }
+  .result-hero .placeholder { padding: 48px 20px; text-align: center; color: var(--muted); }
+  .result-hero .placeholder .p-name { font-size: 1.4rem; color: var(--gold2); margin-bottom: 8px; }
+  .result-hero .overlay { position: absolute; right: 12px; bottom: 12px; background: rgba(0,0,0,.55); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; text-align: center; }
+  .score-ring { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
+  .score-num { font-size: 2rem; font-weight: 700; color: var(--gold2); }
+  .score-unit { color: var(--muted); font-size: 12px; }
+  .story { font-size: 14px; line-height: 1.7; color: var(--cream); margin: 0 0 12px; }
+  .points { margin: 0 0 14px; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .quote { margin: 0 0 16px; padding: 12px 14px; border-left: 3px solid var(--gold); background: rgba(212,175,55,.08); color: var(--gold2); font-size: 14px; line-height: 1.55; }
+  .also { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .chips span { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: 12px; color: var(--gold2); }
+  .site-footer { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: rgba(8,5,10,.9); border-top: 1px solid rgba(212,175,55,.15); backdrop-filter: blur(12px); text-align: center; font-size: 11px; line-height: 1.45; color: #8f8490; z-index: 20; }
+  .sparkle { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <section id="screen-gate" class="screen active">
+      <img class="hero-img" src="covers/cover.jpg" alt="测测你的暗恋剧本类型" />
+      <div style="height:16px"></div>
+      <span class="badge"><span class="sparkle"></span> 暗恋剧本 · 姐妹趣味测</span>
+      <h1>测测你的暗恋剧本类型</h1>
+      <p class="sub">14 道轻测 · 脑补指数 · 7 种暗恋剧本 · 可晒结果卡。<br/>不预测对方心意～付款后的访问码填在下方开测。</p>
+      <div class="card">
+        <label class="field" for="accessInput">访问码（四位）</label>
+        <input id="accessInput" type="password" inputmode="numeric" maxlength="4" placeholder="····" autocomplete="off" />
+        <div id="gateErr" class="err">访问码不对哦，再核对一下付款后的短信/私信呀～</div>
+        <button class="btn btn-primary" id="gateBtn" type="button">进入测试</button>
+      </div>
+    </section>
+
+    <section id="screen-quiz" class="screen">
+      <div class="topbar">
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="qnum" id="qNum">1 / 14</div>
+      </div>
+      <div class="card">
+        <h2 class="q-title" id="qTitle"></h2>
+        <div class="opts" id="qOpts"></div>
+      </div>
+      <button class="btn btn-ghost" id="backBtn" type="button" style="display:none">上一题</button>
+    </section>
+
+    <section id="screen-result" class="screen">
+      <span class="badge">CRUSH SCRIPT</span>
+      <h1 id="resultName">—</h1>
+      <p class="tagline" id="resultTag"></p>
+      <div class="result-hero" id="resultHero">
+        <img id="resultImg" src="" alt="" />
+        <div class="placeholder" id="resultPlaceholder">
+          <div class="p-name" id="phName">—</div>
+          <div class="p-sub">结果卡图待补 · 文案已完整</div>
+        </div>
+        <div class="overlay">
+          <div style="font-size:12px;color:var(--gold2);letter-spacing:.08em;">脑补指数</div>
+          <div class="score-ring">
+            <span class="score-num" id="scoreNum">0</span>
+            <span class="score-unit">/ 100</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="story" id="resultStory"></p>
+        <ul class="points" id="resultPoints"></ul>
+        <blockquote class="quote" id="resultQuote"></blockquote>
+        <div class="also" id="alsoWrap" style="display:none">
+          你也有一点：
+          <div class="chips" id="alsoChips"></div>
+        </div>
+        <button class="btn btn-primary" id="retryBtn" type="button">再测一次</button>
+        <button class="btn btn-ghost" id="shareHintBtn" type="button">复制晒文案</button>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+    仅限购买者使用 · 娱乐向暗恋剧本类型匹配，仅供姐妹自嗨与分享；不预测对方心意、非算命、非心理诊断。请勿转发链接与访问码。
+  </footer>
+
+<script>
+const ACCESS_CODE = "2746";
+const TIE_ORDER = ["SCRIPT","DISASTER","MIXUP","EDITOR","BUBBLE","ARCHIVE","GUARD"];
+
+const PERSONAS = {
+  SCRIPT: {
+    name: "脑补编剧", short: "脑补编剧",
+    tag: "还没开口之前，整部电影都由我执导",
+    img: "covers/结果卡-SCRIPT.jpg",
+    story: "对方一句「哈哈」，你已经写到下一集高潮。偶遇要排时间线，聊天要留钩子，告白要等剧本写到最完美的那一幕。别人说你想太多，其实你是暗恋界的总编剧——现实还没开拍，你这边已经过完三季。测到脑补编剧，不是叫你永远不落地，是承认：掌控剧本的感觉，有时比被回应还上瘾。",
+    points: ["剧本可以写，关键一句还是要留给现实一次试演","别把对方的礼貌台词，硬改成爱情线 BGM","写到第三版还没开口，先问问自己是喜欢人还是喜欢戏"],
+    quote: "「还没开口之前，整部电影都由我执导。」"
+  },
+  GUARD: {
+    name: "克制暗卫", short: "克制暗卫",
+    tag: "我可以喜欢你，但不一定非要被你知道",
+    img: "covers/结果卡-GUARD.jpg",
+    story: "你习惯远远看一眼就走，在对方需要时出现，不需要时隐形。怕开口破坏刚好的距离，怕「勇敢」变成打扰。朋友笑你憋着，其实你把喜欢活成了护卫姿态：体面、安静、把自己按得很低。测到克制暗卫，是承认你用克制保护双方——只是偶尔也允许自己被看见一点点。",
+    points: ["护卫很好，别护到自己只剩透明人","关心可以留痕：一句「记得吃饭」也算出现","克制≠消失；报备式沉默比彻底隐身更温柔"],
+    quote: "「我可以喜欢你，但不一定非要被你知道。」"
+  },
+  BUBBLE: {
+    name: "试探气泡", short: "试探气泡",
+    tag: "我有在靠近啊，只是用气泡不是用炸弹",
+    img: "covers/结果卡-BUBBLE.jpg",
+    story: "点个赞、丢个表情包、发一条刚好会被看到的动态——你把试探做成彩色气泡：轻、亮、一戳就破也好看。不愿正面追问，却一直在试水温。测到试探气泡，说明你享受若即若离的推进感。娱乐向提醒：气泡可爱，连续吹十个还不说人话，对方可能只当你在刷存在感。",
+    points: ["气泡三次未果，第四次改半句明白话","试探可以甜，别试探成谜语人","气泡破了不可怕，可怕的是只吹泡从不靠近"],
+    quote: "「我有在靠近啊，只是用气泡不是用炸弹。」"
+  },
+  DISASTER: {
+    name: "浪漫灾难", short: "浪漫灾难",
+    tag: "一句关心，足够我把今晚写成命运转折夜",
+    img: "covers/结果卡-DISASTER.jpg",
+    story: "雨中相遇、并肩撑伞、纪念日命名权——你脑内从不演小品，只拍灾难级浪漫巨制。心跳一加速，日记标题已经改好。朋友说你戏多，其实你是把暗恋的情绪音量开到最大：又痛又爽。测到浪漫灾难，是承认你享受大起大落；记得偶尔把音量拧回现实。",
+    points: ["高潮可以脑补，落点请核对事实一次","把「命运」改成「今天心情很好」会更轻盈","灾难片很好看，别让自己成为唯一伤亡"],
+    quote: "「一句关心，足够我把今晚写成命运转折夜。」"
+  },
+  ARCHIVE: {
+    name: "静默收藏家", short: "静默收藏家",
+    tag: "我不说，但我什么都收着",
+    img: "covers/结果卡-ARCHIVE.jpg",
+    story: "截图、收藏、时间戳、原话存档——你把暗恋活成一座上锁的私人博物馆。不点赞是怕暴露关注密度，不清理是舍不得任何一条证据。别人以为你淡，其实你的硬盘比嘴巴诚实。测到静默收藏家，是承认你用收藏获得安全感。",
+    points: ["收藏夹定期回顾：哪些是喜欢，哪些只是习惯","存一句原话很好，偶尔也回一句新的","博物馆可以私密，别把自己锁在库房里"],
+    quote: "「我不说，但我什么都收着。」"
+  },
+  MIXUP: {
+    name: "高能误会王", short: "高能误会王",
+    tag: "我不是傻——我只是很会把信号演成连续剧",
+    img: "covers/结果卡-MIXUP.jpg",
+    story: "哈哈=敷衍？滤镜=暗号？走得近=三角恋预告？你能把同一条信号剪成「铁定有戏」和「铁定没戏」两个结局，并且两边都信。测到高能误会王，是承认你脑内戏核太强；娱乐向提醒：别把礼貌当剧情杀。",
+    points: ["每个信号先标「事实」再标「脑补」","两边横跳超过三天，找闺蜜做外部审片","误会很爽，确认一次更省电"],
+    quote: "「我不是傻——我只是很会把信号演成连续剧。」"
+  },
+  EDITOR: {
+    name: "深夜剪辑师", short: "深夜剪辑师",
+    tag: "白天演平静，晚上负责重剪结局",
+    img: "covers/结果卡-EDITOR.jpg",
+    story: "凌晨三点，同一段对话被你剪出十种版本。白天你看起来一切正常，晚上你是暗恋片场的首席剪辑。测到深夜剪辑师，是承认你用重剪消化情绪。娱乐向提醒：素材不够时允许停机，睡眠也是爱情的场务。",
+    points: ["设个「停机时间」：过了点就不再重剪","把最好的一版留给明天的自己","剪辑很治愈，但生活需要成片"],
+    quote: "「白天演平静，晚上负责重剪结局。」"
+  }
+};
+
+const QUESTIONS = [
+  { title: "对方随口回了句「哈哈」，你脑内第一反应更像？", options: [
+    { letter:"A", code:"SCRIPT", text:"立刻开写下一集：ta 其实在掩饰紧张，下一句就会约我" },
+    { letter:"B", code:"MIXUP", text:"反复复盘：哈哈=敷衍？礼貌？还是喜欢到词穷？" },
+    { letter:"C", code:"ARCHIVE", text:"先截图存档，标记时间与上下文，晚点再翻" },
+    { letter:"D", code:"BUBBLE", text:"回一个更轻的表情包试试水温，不正面追问" }
+  ]},
+  { title: "路过对方常去的地方，你更可能？", options: [
+    { letter:"A", code:"GUARD", text:"假装偶遇也不戳破，远远看一眼就走，保护双方体面" },
+    { letter:"B", code:"DISASTER", text:"脑内已上演「雨中相遇→并肩撑伞→告白」完整片" },
+    { letter:"C", code:"EDITOR", text:"当晚在被窝重剪今日视角：要是我换条路就好了" },
+    { letter:"D", code:"SCRIPT", text:"开始规划「合理偶遇剧本」的时间线与台词" }
+  ]},
+  { title: "对方发了朋友圈，你通常？", options: [
+    { letter:"A", code:"ARCHIVE", text:"默默点收藏/截图，不点赞，怕暴露关注密度" },
+    { letter:"B", code:"BUBBLE", text:"点个赞或留一句不痛不痒的评，当作试探气泡" },
+    { letter:"C", code:"MIXUP", text:"把配乐/滤镜/文案拆开解读成「对我的暗号」" },
+    { letter:"D", code:"EDITOR", text:"半夜把这条圈进「今日素材」，重剪成心里的小电影" }
+  ]},
+  { title: "有机会单独聊天时，你更像？", options: [
+    { letter:"A", code:"GUARD", text:"话少但记得对方说过的需求，默默把忙扛走" },
+    { letter:"B", code:"BUBBLE", text:"抛轻问题试探：「周末一般干嘛呀」看对方跟不跟" },
+    { letter:"C", code:"SCRIPT", text:"心里已排好三幕：破冰→共鸣→留下下次钩子" },
+    { letter:"D", code:"DISASTER", text:"气氛稍好就脑补「今晚会不会变成我们的纪念日」" }
+  ]},
+  { title: "暗恋最折磨你的瞬间是？", options: [
+    { letter:"A", code:"EDITOR", text:"凌晨三点还在剪辑「要是当时那样回就好了」" },
+    { letter:"B", code:"MIXUP", text:"明明可能是误会，却越想越确信「铁定有戏/铁定没戏」" },
+    { letter:"C", code:"GUARD", text:"想保护对方不被打扰，于是把喜欢吞回去" },
+    { letter:"D", code:"ARCHIVE", text:"收藏夹已满，却迟迟不舍得清掉任何一条证据" }
+  ]},
+  { title: "闺蜜问「你是不是喜欢 ta」，你会？", options: [
+    { letter:"A", code:"SCRIPT", text:"先否认，回头独自把「如果承认」的剧本写完三版" },
+    { letter:"B", code:"BUBBLE", text:"笑着打哈哈：「还好啦」，再用别的话题试探闺蜜看法" },
+    { letter:"C", code:"DISASTER", text:"直接开启甜虐长篇：「如果有一天 ta……」" },
+    { letter:"D", code:"GUARD", text:"认真说「别乱讲」，生怕传出去伤到对方" }
+  ]},
+  { title: "对方和其他人走得很近，你脑内更像？", options: [
+    { letter:"A", code:"MIXUP", text:"迅速脑补三角恋大戏，自己既是导演又是观众" },
+    { letter:"B", code:"GUARD", text:"提醒自己「人家有自己的生活」，继续默默守着分寸" },
+    { letter:"C", code:"EDITOR", text:"把旧聊天记录重剪，寻找「其实我才是更懂 ta 的人」证据" },
+    { letter:"D", code:"ARCHIVE", text:"只多存一张合影截图，什么都不说" }
+  ]},
+  { title: "你更享受暗恋的哪一段？", options: [
+    { letter:"A", code:"SCRIPT", text:"还没说破之前——剧本全部由我掌控" },
+    { letter:"B", code:"BUBBLE", text:"来回试探、若即若离的气泡感" },
+    { letter:"C", code:"ARCHIVE", text:"偷偷收集小细节的安全感" },
+    { letter:"D", code:"DISASTER", text:"情绪大起大落的浪漫灾难感（又痛又爽）" }
+  ]},
+  { title: "想让对方注意到你时，你更常？", options: [
+    { letter:"A", code:"BUBBLE", text:"发一条刚好会被看到的动态/表情，像吹个泡泡" },
+    { letter:"B", code:"GUARD", text:"在对方需要时出现，不需要时隐形" },
+    { letter:"C", code:"SCRIPT", text:"设计一个「自然」的共同话题入口" },
+    { letter:"D", code:"EDITOR", text:"先在脑内彩排十遍，发出去又撤回重写" }
+  ]},
+  { title: "对方突然关心你一句，你？", options: [
+    { letter:"A", code:"DISASTER", text:"心跳加速，当天日记标题已改成「命运转折夜」" },
+    { letter:"B", code:"MIXUP", text:"同时开两条线：ta 喜欢我 / ta 只是礼貌，来回横跳" },
+    { letter:"C", code:"ARCHIVE", text:"把这句原话+时间精确存进收藏夹" },
+    { letter:"D", code:"GUARD", text:"回得很淡定，心里却把「要不要回应更多」按住" }
+  ]},
+  { title: "如果给这段暗恋选一种介质，你选？", options: [
+    { letter:"A", code:"SCRIPT", text:"未拆封的剧本本——写满但还没给任何人看" },
+    { letter:"B", code:"ARCHIVE", text:"上了锁的相册——全是只有我懂的细节" },
+    { letter:"C", code:"EDITOR", text:"深夜剪辑时间线——同一段素材能剪出十种结局" },
+    { letter:"D", code:"BUBBLE", text:"一串彩色气泡——轻、亮、一戳就破也好看" }
+  ]},
+  { title: "暗恋久了，你最害怕的是？", options: [
+    { letter:"A", code:"GUARD", text:"一开口就破坏现在刚好的距离" },
+    { letter:"B", code:"DISASTER", text:"喜欢变成一场自我感动的灾难片" },
+    { letter:"C", code:"MIXUP", text:"到最后发现全是误会，连恨都找不到对象" },
+    { letter:"D", code:"EDITOR", text:"某一天素材不够了，深夜再也剪不动" }
+  ]},
+  { title: "朋友说「你该勇敢一点」，你内心OS更像？", options: [
+    { letter:"A", code:"SCRIPT", text:"「勇敢可以，但要等剧本写到高潮那一幕」" },
+    { letter:"B", code:"BUBBLE", text:"「我有在勇敢啊，只是用气泡不是用炸弹」" },
+    { letter:"C", code:"ARCHIVE", text:"「我先把证据收齐再说」" },
+    { letter:"D", code:"GUARD", text:"「勇敢如果伤害 ta，那就不叫勇敢」" }
+  ]},
+  { title: "如果给「暗恋中的你」选一句人设，你选？", options: [
+    { letter:"A", code:"SCRIPT", text:"「还没开口之前，整部电影都由我执导。」" },
+    { letter:"B", code:"GUARD", text:"「我可以喜欢你，但不一定非要被你知道。」" },
+    { letter:"C", code:"MIXUP", text:"「我不是傻——我只是很会把信号演成连续剧。」" },
+    { letter:"D", code:"EDITOR", text:"「白天演平静，晚上负责重剪结局。」" }
+  ]}
+];
+
+const state = { unlocked: false, answers: [], qIndex: 0 };
+function show(id) {
+  document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+const accessInput = document.getElementById("accessInput");
+const gateErr = document.getElementById("gateErr");
+document.getElementById("gateBtn").addEventListener("click", tryUnlock);
+accessInput.addEventListener("keydown", e => { if (e.key === "Enter") tryUnlock(); });
+accessInput.addEventListener("input", () => {
+  accessInput.value = accessInput.value.replace(/\D/g, "").slice(0, 4);
+  gateErr.classList.remove("show");
+});
+function tryUnlock() {
+  const v = (accessInput.value || "").trim();
+  if (v === ACCESS_CODE) {
+    state.unlocked = true; gateErr.classList.remove("show");
+    state.answers = []; state.qIndex = 0; renderQuestion(); show("screen-quiz");
+  } else { gateErr.classList.add("show"); accessInput.focus(); }
+}
+function renderQuestion() {
+  const q = QUESTIONS[state.qIndex];
+  const total = QUESTIONS.length;
+  document.getElementById("qNum").textContent = `${state.qIndex + 1} / ${total}`;
+  document.getElementById("progressBar").style.width = `${(state.qIndex / total) * 100}%`;
+  document.getElementById("qTitle").textContent = q.title;
+  const box = document.getElementById("qOpts"); box.innerHTML = "";
+  q.options.forEach(opt => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "opt";
+    b.innerHTML = `<span class="letter">${opt.letter}</span>${opt.text}`;
+    b.addEventListener("click", () => pick(opt.code));
+    box.appendChild(b);
+  });
+  document.getElementById("backBtn").style.display = state.qIndex > 0 ? "block" : "none";
+}
+function pick(code) {
+  state.answers[state.qIndex] = code;
+  if (state.qIndex < QUESTIONS.length - 1) { state.qIndex += 1; renderQuestion(); }
+  else { document.getElementById("progressBar").style.width = "100%"; finish(); }
+}
+document.getElementById("backBtn").addEventListener("click", () => {
+  if (state.qIndex > 0) { state.qIndex -= 1; renderQuestion(); }
+});
+function countCodes(answers) {
+  const counts = {}; TIE_ORDER.forEach(c => { counts[c] = 0; });
+  answers.forEach(c => { if (counts[c] != null) counts[c] += 1; });
+  return counts;
+}
+function pickWinner(counts) {
+  let max = -1; Object.values(counts).forEach(n => { if (n > max) max = n; });
+  const tied = Object.keys(counts).filter(c => counts[c] === max);
+  tied.sort((a, b) => TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b));
+  return tied[0];
+}
+function secondCount(counts, winner) {
+  let second = 0;
+  Object.keys(counts).forEach(c => { if (c !== winner && counts[c] > second) second = counts[c]; });
+  return second;
+}
+function gapBonus(gap) { if (gap <= 0) return 0; if (gap === 1) return 2; if (gap === 2) return 4; return 5; }
+function calcScore(winnerCount, gap) {
+  let s = 68 + winnerCount * 3 + gapBonus(gap);
+  if (s < 72) s = 72; if (s > 91) s = 91; return s;
+}
+function finish() {
+  const counts = countCodes(state.answers);
+  const winner = pickWinner(counts);
+  const gap = counts[winner] - secondCount(counts, winner);
+  const score = calcScore(counts[winner], gap);
+  const persona = PERSONAS[winner];
+  const others = Object.keys(counts).filter(c => c !== winner && counts[c] > 0)
+    .sort((a, b) => (counts[b] - counts[a]) || (TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b))).slice(0, 3);
+  document.getElementById("resultName").textContent = persona.name;
+  document.getElementById("resultTag").textContent = persona.tag;
+  document.getElementById("phName").textContent = persona.name;
+  const img = document.getElementById("resultImg");
+  const ph = document.getElementById("resultPlaceholder");
+  img.onload = () => { img.style.display = "block"; ph.style.display = "none"; };
+  img.onerror = () => { img.style.display = "none"; ph.style.display = "block"; };
+  img.style.display = "none"; ph.style.display = "block";
+  img.src = persona.img + "?t=" + Date.now();
+  document.getElementById("scoreNum").textContent = String(score);
+  document.getElementById("resultStory").textContent = persona.story;
+  document.getElementById("resultQuote").textContent = persona.quote;
+  const ul = document.getElementById("resultPoints"); ul.innerHTML = "";
+  persona.points.forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+  const alsoWrap = document.getElementById("alsoWrap");
+  const chips = document.getElementById("alsoChips");
+  if (others.length) {
+    alsoWrap.style.display = "block"; chips.innerHTML = "";
+    others.forEach(c => { const s = document.createElement("span"); s.textContent = PERSONAS[c].short; chips.appendChild(s); });
+  } else alsoWrap.style.display = "none";
+  window.__shareText = `我测到了「${persona.name}」· 脑补指数 ${score}/100\n${persona.quote}\n（测测你的暗恋剧本类型 · 仅供娱乐）`;
+  show("screen-result");
+}
+document.getElementById("retryBtn").addEventListener("click", () => {
+  state.answers = []; state.qIndex = 0; renderQuestion(); show("screen-quiz");
+});
+document.getElementById("shareHintBtn").addEventListener("click", async () => {
+  const t = window.__shareText || "";
+  try { await navigator.clipboard.writeText(t); alert("已复制晒文案～"); }
+  catch (e) { prompt("复制下面文案：", t); }
+});
+</script>
+</body>
+</html>
